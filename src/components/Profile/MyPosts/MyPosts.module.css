@@ -1,0 +1,22 @@
+  .item {
+    color: greenyellow
+  }
+
+  .posts {
+    padding: 18px;
+  }
+
+  .textareaHerself {
+    min-width: 200px;
+    min-height: 50px;
+  }
+
+  .textareaBlock {
+    padding-top: 20px;
+    display: inline-grid;
+    grid-template-rows: 2fr;
+  }
+
+  .textareaButton {
+    margin: 0 auto;
+  }

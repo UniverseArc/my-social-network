@@ -1,0 +1,31 @@
+.nav {
+    grid-area: n;
+    background-color: burlywood;
+    padding: 60px;
+}
+
+.item a {
+    color: white;
+    text-decoration: unset;
+}
+
+.item a[class="active"] {
+    color: gold;
+}
+
+.settingsInNav {
+    padding-top: 20px;
+}
+
+.userInFriendsListNavbar {
+    display: flex;
+}
+
+.userAvatarInListOfContacts {
+    width: 50px;
+    border-radius: 50px;
+}
+
+.friendsContainer p{
+    color: white;
+}

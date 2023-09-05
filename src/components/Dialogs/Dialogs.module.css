@@ -1,0 +1,39 @@
+.imessagerContainer{
+  display: grid;
+  grid-template-areas: 
+  "imH1 imH1"
+  "contacts messages"
+  ;
+
+  grid-template-rows: 20px 1fr;
+  grid-template-columns: 3fr 10fr;
+  grid-gap: 15px;
+}
+.imessagerH1{
+  grid-area: imH1;
+  text-align: right;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+.listOfContacts{
+  grid-area: contacts;
+  padding-left: 10px;
+}
+.listOfContactsActive a{
+  color: black;
+  text-decoration: unset;
+}
+.listOfContactsActive a[class="active"]{
+  color: gold;
+}
+.userListOfContacts{
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.activeChatWithUser{
+  grid-area: messages;
+}
+.messageFromActiveChat{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

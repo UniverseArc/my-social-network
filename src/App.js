@@ -1,24 +1,50 @@
-import logo from './logo.svg';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Dialogs from './components/Dialogs/Dialogs';
+import Header from './components/Header/Header';
+import NavBar from './components/NavBar/NavBar';
+import Profile from './components/Profile/Profile';
+import News from './components/News/News';
+import Music from './components/Music/Music';
+import Settings from './components/Settings/Settings';
 
-function App() {
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="app-wrapper">
+        <Header />
+        <NavBar 
+        friendsInSidebarData={props.TransferState.SideBar.friendsInSidebarData} />
+
+        <div className="app-wrapper-content">
+          <Routes>
+
+            <Route path="profile" element={
+              <Profile
+                TransferState={props.TransferState.profilePage}
+
+                addPostOnWall={props.addPostOnWall}
+
+                seeTheActionsOfUserInTextarea={props.seeTheActionsOfUserInTextarea} />} />
+
+            <Route path="dialogs" element={
+            <Dialogs
+                TransferState={props.TransferState.chattingPage}
+
+                addMessageInChat={props.addMessageInChat}
+
+                watchForInputUserInTexteareOfChats={props.watchForInputUserInTexteareOfChats} />} />
+
+            <Route path="news" element={<News />} />
+
+            <Route path="music" element={<Music />} />
+
+            <Route path="settings" element={<Settings />} />
+
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

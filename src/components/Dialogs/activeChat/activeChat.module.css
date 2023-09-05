@@ -1,0 +1,21 @@
+.activeChatWithUser{
+  grid-area: messages;
+}
+.messageFromActiveChat{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.textareaHerself {
+  min-width: 200px;
+  min-height: 50px;
+}
+
+.textareaBlock {
+  padding-top: 20px;
+  display: inline-grid;
+  grid-template-rows: 2fr;
+}
+
+.textareaButton {
+  margin: 0 auto;
+}

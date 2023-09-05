@@ -1,0 +1,13 @@
+  .item {
+    color: greenyellow;
+    padding: 15px 15px 15px 0px;
+  }
+
+  .avatarInPosts {
+    width: 50px;
+    border-radius: 50px;
+  }
+
+  .likeOnPosts{
+    margin-left: 10px;
+  }
