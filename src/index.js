@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import State, { addMessageInChat, addPostOnWall, seeTheActionsOfUserInTextarea, subscribe, watchForInputUserInTexteareOfChats } from './components/Redux/State';
+import store from './components/Redux/State';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 let rerenderEntireTree = (State) => {
@@ -10,20 +10,20 @@ let rerenderEntireTree = (State) => {
         <React.StrictMode>
 
             <App TransferState={State} 
-            watchForInputUserInTexteareOfChats={watchForInputUserInTexteareOfChats}
+            watchForInputUserInTexteareOfChats={store.watchForInputUserInTexteareOfChats.bind(store)}
 
-            addMessageInChat={addMessageInChat} 
+            addMessageInChat={store.addMessageInChat.bind(store)} 
 
-            addPostOnWall={addPostOnWall} 
+            addPostOnWall={store.addPostOnWall.bind(store)} 
             
-            seeTheActionsOfUserInTextarea={seeTheActionsOfUserInTextarea} />
+            seeTheActionsOfUserInTextarea={store.seeTheActionsOfUserInTextarea.bind(store)} />
 
         </React.StrictMode>
     );
 }
 
-rerenderEntireTree(State)
-subscribe(rerenderEntireTree);
+rerenderEntireTree(store.getState())
+store.subscribe(rerenderEntireTree);
 
 
 
