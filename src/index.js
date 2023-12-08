@@ -2,25 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import store from './components/Redux/redux-store';
-import { Provider } from 'react-redux';
+import State, { addMessageInChat, addPostOnWall, seeTheActionsOfUserInTextarea, subscribe, watchForInputUserInTexteareOfChats } from './components/Redux/State';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const rerenderEntireTree = (State) => {
     root.render(
         <React.StrictMode>
-            <Provider store={store}>
-                <App />
-            </Provider>
+
+            <App TransferState={State} 
+            watchForInputUserInTexteareOfChats={watchForInputUserInTexteareOfChats}
+
+            addMessageInChat={addMessageInChat} 
+
+            addPostOnWall={addPostOnWall} 
+            
+            seeTheActionsOfUserInTextarea={seeTheActionsOfUserInTextarea} />
+
         </React.StrictMode>
     );
 }
-rerenderEntireTree(store.getState())
 
-store.subscribe(() => {
-    let State = store.getState();
-    rerenderEntireTree (State)
-});
+rerenderEntireTree(State)
+subscribe(rerenderEntireTree);
 
 
 
