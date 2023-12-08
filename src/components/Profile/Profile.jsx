@@ -1,16 +1,12 @@
-import MyPosts from "./MyPosts/MyPosts";
+import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 const Profile = (props) => {
     return (
         <div>
-            <ProfileInfo />
-            <MyPosts postsData={props.TransferState.postsData} 
-            recievedActionOfUser={props.TransferState.recievedActionOfUser} 
-            seeTheActionsOfUserInTextarea={props.seeTheActionsOfUserInTextarea} 
-            addPostOnWall={props.addPostOnWall}/> 
+            <ProfileInfo profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
+            <MyPostsContainer/> 
         </div>
     )
 }
-
 export default Profile;

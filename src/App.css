@@ -1,6 +1,14 @@
 .App {
   text-align: center;
 }
+.appPreloader{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(223, 223, 223);
+  width: 100vw;
+  height: 100vh;
+}
 
 .App-logo {
   height: 40vmin;

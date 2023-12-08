@@ -1,0 +1,44 @@
+.usersTitle{
+    margin-left: 10px;
+}
+.userInfo_wrapper{
+    display: flex;
+    margin: 20px;
+}
+.userAvatarAndButton{
+    margin-right: 10px;
+}
+.userAvatar{
+    width: 70px;
+    border-radius: 100px;
+}
+.userInfo_inside{
+    display: flex;
+    border: 1px solid black;
+    border-radius: 20px;
+    flex: 1 1 auto;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.userInfo_inside_name_status{
+    padding-left: 10px;
+}
+.userInfo_inside_name_status_div2{
+    padding-top: 50px;
+}
+.userInfo_inside_location{
+    text-align: right;
+    padding-right: 10px;
+}
+.showMore{
+    text-align: center;
+    padding-bottom: 20px;
+}
+.placementPagesSelectRow_currentSpan{
+    font-weight: bold;
+}
+.usersBody_preloader{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}

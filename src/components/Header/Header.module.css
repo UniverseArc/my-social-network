@@ -6,3 +6,23 @@
   .header img{
     width: 55px;
   }
+  .header_login{
+    float: right;
+  }
+  .header_login a{
+    color: white;
+  }
+  .usernameStyles{
+    display: flex;
+    color: white;
+    gap: 10px;
+  }
+  .userAvatarInLogoArea{
+    width: 70px;
+    border-radius: 100px;
+  }
+  .buttonLogoutStyles{
+    margin-top: 18px;
+    width: 60px;
+    height: 20px;
+  }

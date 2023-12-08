@@ -1,19 +1,15 @@
 import classes from './Dialogs.module.css'
-import ListOfDialogs from './ListOfDialogs/ListOfDialogs';
-import ActiveChat from './activeChat/activeChat';
+import ListOfDialogsContainer from './ListOfDialogs/ListOfDialogsContainer';
+import ActiveChatContainer from './activeChat/activeChatContainer';
+import { Navigate } from "react-router-dom";
 const Dialogs = (props) => {
+    if(!props.isAuth) return <Navigate to="/login" />
     return (
-        <div className={classes.imessagerContainer}>
-            <div className={classes.imessagerH1}>IMessager</div>
-            <ListOfDialogs usersData={props.TransferState.usersData} />
-            <ActiveChat
-                TransferMessagesData={props.TransferState.messagesData} 
+        <div className={classes.thismessagerContainer}>
+            <div className={classes.thismessagerH1}>ThisMessager</div>
+            <ListOfDialogsContainer />
 
-                copyedAnswerOfActionFromUserInChat={props.TransferState.copyedAnswerOfActionFromUserInChat}
-                
-                addMessageInChat={props.addMessageInChat}
-
-                watchForInputUserInTexteareOfChats={props.watchForInputUserInTexteareOfChats} />
+            <ActiveChatContainer />
         </div>
     );
 }

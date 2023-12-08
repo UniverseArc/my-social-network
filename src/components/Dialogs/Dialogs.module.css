@@ -1,4 +1,4 @@
-.imessagerContainer{
+.thismessagerContainer{
   display: grid;
   grid-template-areas: 
   "imH1 imH1"
@@ -9,7 +9,7 @@
   grid-template-columns: 3fr 10fr;
   grid-gap: 15px;
 }
-.imessagerH1{
+.thismessagerH1{
   grid-area: imH1;
   text-align: right;
   padding-right: 10px;

@@ -7,10 +7,36 @@
 
 .avatarPlusDescriptionZone {
     padding-left: 18px;
+    display: flex;
 }
-.profileInfoContainer{
-
+.userAvatarStyle{
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
 }
-.profileInfoImgContainer{
-
+.userInfoAreaBlock{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.aboutMe{
+    display: flex;
+    flex-direction: column;
+}
+.fullNameUser{
+    font-weight: bold;
+}
+.userInfoArea{
+    margin-left: 20px;
+}
+.lookingForAJob{
+    margin-top: 10px;
+}
+.aboutUserContainerStyle{
+    display: flex;
+}
+.lookingForAJobDescription{
+    margin-top: 10px;
+}
+.preloaderStyles_Profile{
+    padding: 100px;
 }
