@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import classes from "./NavBar.module.css"
 import FriendUserInSideBar from "./FriendsInSideBar/FriendUserInSideBar";
 const NavBar = (props) => {
-    let arrayOfFriendList = props.friendsInSidebarData.map(el => <FriendUserInSideBar name={el.name} id={el.id} userAvatarFriends={el.userAvatarFriends}/>)
+    let arrayOfFriendList = props.friendsInSidebarData.map(el => <FriendUserInSideBar key={el.id} name={el.name} id={el.id} userAvatarFriends={el.userAvatarFriends}/>)
     return (
         <nav className={classes.nav}>
             <div className={`${classes.item} ${classes.active}`}>

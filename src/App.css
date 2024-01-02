@@ -1,6 +1,10 @@
 .App {
   text-align: center;
 }
+.dialogsSuspense{
+  display: flex;
+  justify-content: center;
+}
 .appPreloader{
   display: flex;
   justify-content: center;

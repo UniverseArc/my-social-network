@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
+import styles from "./MyStatusWithHooks.module.css";
 
 const MyStatusWithHooks = (props) => {
     const [editMode, setEditMode] = useState(false)
     const [status, setStatus] = useState(props.status)
-    debugger
     useEffect(() => {
-        console.log("useEffect in action");
-        debugger
         setStatus(props.status)
     }, [props.status])
-
     const activeEditMode = () => {
         setEditMode(true)
     }
@@ -23,7 +20,7 @@ const MyStatusWithHooks = (props) => {
     return (
         <div>
             {!editMode &&
-                <span onDoubleClick={activeEditMode}>{props.status || "Установить статус?"}</span>
+                <span className={styles.statusCursor} onDoubleClick={activeEditMode}>{props.status || "Установить статус?"}</span>
             }
             {editMode &&
                 <input onChange={onChangeUpdateStatus} autoFocus={true} onBlur={deactiveEditMode} type="text" value={status}></input>

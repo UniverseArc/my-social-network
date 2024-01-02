@@ -8,7 +8,8 @@ class UsersClassComponent extends React.Component {
     componentDidMount() {
         // getUsers - это коллбек. Просто напоминаю. И уже передавая параметры в колбек, тот, по вызову componentDidMount - засунет их в getUsersThunkCreator.
         // И так для всех остальных санок.
-        this.props.getUsers(this.props.currentPage, this.props.pageSize) 
+        const {currentPage, pageSize} = this.props
+        this.props.getUsers(currentPage, pageSize) 
         // | | |
         // V V V
         // this.props.togglerIsAxiosing(false)
@@ -19,8 +20,9 @@ class UsersClassComponent extends React.Component {
     }
 
     onChangedPage = (steppedPage) => {
+        let {pageSize} = this.props
         this.props.nullUsersData();
-        this.props.getUsers(steppedPage, this.props.pageSize)
+        this.props.getUsers(steppedPage, pageSize)
         // | | |
         // V V V
         // usersAPI.getUsers(steppedPage, this.props.pageSize).then(data => {
@@ -38,6 +40,7 @@ class UsersClassComponent extends React.Component {
                     usersData={this.props.usersData}
                     followOnUserCB={this.props.followOnUserCB}
                     unFollowFromUserCB={this.props.unFollowFromUserCB}
+                    isAxiosing={this.props.isAxiosing}
                     onChangedPage={this.onChangedPage}
                     followingInProgress={this.props.followingInProgress}
                 />

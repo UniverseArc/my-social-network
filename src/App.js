@@ -7,13 +7,14 @@ import Settings from './components/Settings/Settings';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
+// import DialogsContainer from './components/Dialogs/DialogsContainer';
 import LoginContainer from './components/Login/LoginContainer';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { initializedSuccessThunkCreator } from './components/Redux/appReducer';
 import Preloader from './components/common/preloader/preloader';
 
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 
 class App extends React.Component {
   componentDidMount(){
@@ -29,6 +30,7 @@ class App extends React.Component {
           <NavBarContainer />
   
           <div className="app-wrapper-content">
+            <Suspense fallback={<div>Loading...</div>}>
             <Routes>
   
               <Route path= "login" element={<LoginContainer />} />
@@ -46,14 +48,16 @@ class App extends React.Component {
               <Route path="music" element={<Music />} />
   
               <Route path="settings" element={<Settings />} />
-  
             </Routes>
+            </Suspense>
           </div>
         </div>
       </BrowserRouter>
     );
   }
 }
+
+const operatorIngages = (newParams) => {};
 
 const mapStateToProps = (state) => ({
   initializedValue: state.app.initializedValue

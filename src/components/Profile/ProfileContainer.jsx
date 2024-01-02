@@ -2,12 +2,12 @@
 import React from "react";
 import Profile from "./Profile";
 import { connect } from "react-redux";
-import { getProfileThunkCreator, getStatusThunkCreator, updateStatusThunkCreator } from "../Redux/profileReducer";
+import { getProfileThunkCreator, getStatusThunkCreator, savePhotoThunkCreator, sendProfileInfoThunkCreator, updateStatusThunkCreator } from "../Redux/profileReducer";
 import { compose } from "redux";
 import withRouter from "../Utils/High Order Component/withRouter";
 
 class ProfileContainer extends React.Component {
-    componentDidMount() {
+    profileUpdate(){
         let userId = this.props.router.params.profiled
         if(!userId) {
             userId = this.props.authorizedUserId
@@ -34,9 +34,19 @@ class ProfileContainer extends React.Component {
         //     this.props.setUserProfile(data)
         // })
     }
+    
+    componentDidMount() {
+        this.profileUpdate()
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.router.params.profiled !== prevProps.router.params.profiled){
+            this.profileUpdate()
+        }
+    }
     render() {
         return (
-            <Profile {...this.props} profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus} />
+            <Profile {...this.props} isOwner={!this.props.router.params.profiled} />
         )
     }
 }
@@ -48,6 +58,7 @@ let mapStateToProps = (state) => {
         status: state.profilePage.status,
         authorizedUserId: state.authUser.userId,
         isAuth: state.authUser.isAuth,
+        isAxiosing: state.profilePage.isAxiosing,
     }
 }
 
@@ -56,7 +67,7 @@ let mapStateToProps = (state) => {
 // export default connect(mapStateToProps, {getProfile: getProfileThunkCreator})(withRouter(checkOnAuthComponent))
 
 export default compose(
-    connect(mapStateToProps, { getProfile: getProfileThunkCreator, getStatus: getStatusThunkCreator, updateStatus: updateStatusThunkCreator }),
+    connect(mapStateToProps, { getProfile: getProfileThunkCreator, getStatus: getStatusThunkCreator, updateStatus: updateStatusThunkCreator, savePhoto: savePhotoThunkCreator, sendProfileInfo: sendProfileInfoThunkCreator}),
     withRouter,
     // Убрал защиту с целью отработать её через "Программный редирект, см. 80 видос 33:34"
     // withComponentRedirect, 

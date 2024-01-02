@@ -1,12 +1,13 @@
 import { usersAPI } from "../DAL/api"
+import { reducerObjHelper } from "../Utils/ReducerObjectsHelper/ReducerObjectsHelper"
 
-const FOLLOW = "FOLLOW"
-const UNFOLLOW = "UNFOLLOW"
-const SEND_USERS = "SEND_USERS"
-const SEND_STEPPED_PAGE_NUMBER = "SEND_STEPPED_PAGE_NUMBER"
-const TOGGLE_IS_AXIOSING = "TOGGLE_IS_AXIOSING"
-const NULL_USERSDATA_DUE_TO_REQUEST = "NULL_USERSDATA_DUE_TO_REQUEST"
-const TOGGLE_FOLLOWING_PROCESS = "TOGGLE_FOLLOWING_PROCESS"
+const FOLLOW = "my-social-network/users/FOLLOW"
+const UNFOLLOW = "my-social-network/users/UNFOLLOW"
+const SEND_USERS = "my-social-network/users/SEND_USERS"
+const SEND_STEPPED_PAGE_NUMBER = "my-social-network/users/SEND_STEPPED_PAGE_NUMBER"
+const TOGGLE_IS_AXIOSING = "my-social-network/users/TOGGLE_IS_AXIOSING"
+const NULL_USERSDATA_DUE_TO_REQUEST = "my-social-network/users/NULL_USERSDATA_DUE_TO_REQUEST"
+const TOGGLE_FOLLOWING_PROCESS = "my-social-network/users/TOGGLE_FOLLOWING_PROCESS"
 
 
 let initialState = { 
@@ -22,20 +23,32 @@ const usersReducer = (State = initialState, action) => {
     switch (action.type) {
 
         case FOLLOW: {
-            const copyOfState = {...State, usersData: State.usersData.map(u => u.id === action.id ? { ...u, followed: true } : u)}
+            const copyOfState = {...State, usersData: reducerObjHelper(State.usersData, action.id, "id", {followed: true})}
             return copyOfState
         }
         case UNFOLLOW: {
-            const copyOfState = {...State, usersData: State.usersData.map(u => {
-                if (u.id === action.id) {
-                    return {...u, followed: false}
-                }
-                return u
-            })}
-             return copyOfState
+            const copyOfState = {...State, usersData: reducerObjHelper(State.usersData, action.id, "id", {followed: false})}
+            return copyOfState
         }
+
+        // case FOLLOW: {
+        //     const copyOfState = {...State, usersData: State.usersData.map(u => u.id === action.id ? { ...u, followed: true } : u)}
+        //     console.log(copyOfState);
+        //     return copyOfState
+        // }
+        // case UNFOLLOW: {
+        //     const copyOfState = {...State, usersData: State.usersData.map(u => {
+        //         if (u.id === action.id) {
+        //             return {...u, followed: false}
+        //         }
+        //         return u
+        //     })}
+        //     console.log(copyOfState);
+        //     return copyOfState
+        // }
+
         case SEND_USERS: {
-            const copyOfState = {...State, usersData: action.users}
+            const copyOfState = {...State, usersData: action.users.items, TotalUsersCount: action.users.totalCount}
             // В 55 уроке задваивание пользователей уберется!
             return copyOfState
         }
@@ -78,38 +91,37 @@ export const nullUsersData = () => ({type: NULL_USERSDATA_DUE_TO_REQUEST})
 
 export const toogleFollowingProcess = (isFetching, UserId) => ({type: TOGGLE_FOLLOWING_PROCESS, isFetching, UserId})
 
+// Санки без async await:
 export const getUsersThunkCreator = (currentPage, pageSize) => {
         return (dispatch) => {
         dispatch(togglerIsAxiosing(false))
         usersAPI.getUsers(currentPage, pageSize).then(data => {
             dispatch(getSteppedPageFromUser(currentPage))
             dispatch(togglerIsAxiosing(true))
-            dispatch(sendUsers(data.items))
+            dispatch(sendUsers(data))
         })
     }
 }
 
-export const unFollowThunkCreator = (UserId) => {
-    return (dispatch) => {
+export const subscribeToggleFlow = ( dispatch, requestMethod, actionMethod, UserId) => {
         dispatch(toogleFollowingProcess(true, UserId))
-        usersAPI.deleteFollowOnUser(UserId).then(response => {
+        requestMethod(UserId).then(response => {
             if (response.data.resultCode === 0) {
-                dispatch(unFollowFromUser(UserId))
+                dispatch(actionMethod(UserId))
             }
             dispatch(toogleFollowingProcess(false, UserId))
         })
+}
+
+export const unFollowThunkCreator = (UserId) => {
+    return (dispatch) => {
+        subscribeToggleFlow(dispatch, usersAPI.deleteFollowOnUser.bind(usersAPI), unFollowFromUser, UserId)
     }
 }
 
 export const followThunkCreator = (UserId) => {
     return (dispatch) => {
-        dispatch(toogleFollowingProcess(true, UserId))
-        usersAPI.postFollowOnUser(UserId).then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(followOnUser(UserId))
-            }
-            dispatch(toogleFollowingProcess(false, UserId))
-        })
+        subscribeToggleFlow(dispatch, usersAPI.postFollowOnUser.bind(usersAPI), followOnUser, UserId)
     }
 }
 

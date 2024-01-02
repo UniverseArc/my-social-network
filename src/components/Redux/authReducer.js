@@ -1,8 +1,11 @@
 import { stopSubmit } from "redux-form"
-import { headerAPI } from "../DAL/api"
+import { headerAPI, profileAPI, securityAPI } from "../DAL/api"
 
-const IS_USER_LOGIN = "IS_USER_LOGIN"
-const USER_AVATAR = "USER_AVATAR"
+const IS_USER_LOGIN = "my-social-network/auth/IS_USER_LOGIN"
+const USER_AVATAR = "my-social-network/auth/USER_AVATAR"
+const SET_CAPTCHA_URL = "my-social-network/auth/SET_CAPTCHA_URL"
+const NULL_CAPTHA = "my-social-network/auth/NULL_CAPTHA"
+
 
 let initialState = { 
     userId: null,
@@ -10,6 +13,7 @@ let initialState = {
     login: null,
     isAuth: false,
     userAvatar: undefined,
+    captchaUrl: null,
 }
 
 
@@ -17,6 +21,14 @@ const authReducer = (State = initialState, action) => {
     switch (action.type) {
         case IS_USER_LOGIN: {
             const copyOfState = {...State, ...action.payload}
+            return copyOfState
+        }
+        case SET_CAPTCHA_URL: {
+            const copyOfState = {...State, captchaUrl: action.captcha}
+            return copyOfState
+        }
+        case NULL_CAPTHA: {
+            const copyOfState = {...State, captchaUrl: null}
             return copyOfState
         }
         case USER_AVATAR: {
@@ -29,17 +41,19 @@ const authReducer = (State = initialState, action) => {
 }
 
 export const isUserLogin = (userId, email, login, isAuth, userAvatar) => ({type: IS_USER_LOGIN, payload: {userId, email, login, isAuth, userAvatar}})
-export const getUserAvatar = (photo) => ({type: USER_AVATAR, photo})
+export const setUserAvatarInHeader = (photo) => ({type: USER_AVATAR, photo})
+export const setCaptchaUrl = (captcha) => ({type: SET_CAPTCHA_URL, captcha})
+const nullCaptchaAfterLogin = () => ({type: NULL_CAPTHA})
 
-export const getAuthFromUserThunkCreator = () => (dispatch) => {
-        return headerAPI.getAuthFromCurrentUser()
-        .then(data => {
-            if (data.resultCode === 0) {
-                let {id, email, login, userAvatar} = data.data;
-                dispatch(isUserLogin(id, email, login, true, userAvatar))
-            }
-        return 
-        })
+export const getAuthFromUserThunkCreator = () => async (dispatch) => {
+        const data = await headerAPI.getAuthFromCurrentUser()
+        if (data.resultCode === 0) {
+            let { id, email, login} = data.data
+            dispatch(isUserLogin(id, email, login, true))
+
+            const response = await profileAPI.getProfile(id)
+            dispatch(setUserAvatarInHeader(response.photos.small))
+        }
         // Легаси хуета ))))))))))))))))
         // .then(data => { //TO-DO: ! ЦЕПОЧКА ПЛОХО ПОЛУЧИЛАСЬ, ПЕРЕПИСАТЬ !
         //     if (data.data.id !== null) {
@@ -58,30 +72,34 @@ export const getAuthFromUserThunkCreator = () => (dispatch) => {
         // .catch(data => {
         //     console.log("В авторизации случилась ошибка.");
         // })
-    }
-
-export const loginThunkCreator = (email, password, rememberMe) => {
-    return (dispatch) => {
-        headerAPI.login(email, password, rememberMe).then(data => {
-            if (data.resultCode === 0) {
-                dispatch(getAuthFromUserThunkCreator())
+}
+export const loginThunkCreator = (email, password, rememberMe, captcha) => async (dispatch) => {
+        const data = await headerAPI.login(email, password, rememberMe, captcha)
+        if (data.resultCode === 0) {
+            dispatch(getAuthFromUserThunkCreator())
+            dispatch(nullCaptchaAfterLogin())
+        }
+        else{
+            if(data.resultCode === 10){
+                debugger
+                dispatch(getCaptchaUrlThunkCreator())
             }
-            else{
-                let message = data.messages.length > 0 ? data.messages[0] : "Unknown error"
-                dispatch(stopSubmit("login", {_error: message}))
-            }
-        })
-    }
+            let message = data.messages.length > 0 ? data.messages[0] : "Unknown error"
+            dispatch(stopSubmit("login", {_error: message}))
+        }
 }
 
-export const logoutThunkCreator = () => {
-    return (dispatch) => {
-        headerAPI.logout().then(data => {
-            if (data.resultCode === 0) {
-                dispatch(isUserLogin(null, null, null, false, undefined))
-            }
-        })
-    }
+export const logoutThunkCreator = () => async (dispatch) => {
+        const data = await headerAPI.logout()
+        if (data.resultCode === 0) {
+            dispatch(isUserLogin(null, null, null, false, undefined))
+        }
+}
+
+export const getCaptchaUrlThunkCreator = () => async (dispatch) => {
+    debugger
+    const data = await securityAPI.getCaptchaUrl()
+        dispatch(setCaptchaUrl(data.url))
 }
 
 export default authReducer;

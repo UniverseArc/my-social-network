@@ -1,0 +1,13 @@
+.placementPagesSelectRow_currentSpan{
+    font-weight: bold;
+}
+
+.pageElement{
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 20px;
+    width: 40px;
+    height: 27px;
+    margin-left: 3px;
+    margin-right: 3px;
+}

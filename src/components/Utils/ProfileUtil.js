@@ -4,6 +4,4 @@ export function httpsCheck(link) {
         return "https://" + link
     }
     return link
-    
-
 }

@@ -1,30 +1,30 @@
 import React from "react";
-import { Field, reduxForm } from "redux-form";
-import { Input } from "../Utils/TuningForms/TuningForms";
+import { reduxForm } from "redux-form";
+import { Input, customField } from "../Utils/TuningForms/TuningForms";
 import { requiredField } from "../Utils/Validation/validation";
 import styles from "./Login.module.css"
 import { Navigate } from "react-router-dom";
 
-const LoginForm = (props) => {
-    console.log(props);
+const LoginForm = ({handleSubmit, error, captchaUrl}) => {
+    debugger
     // TO-DO: Redux-Form устарел, заменить на что-то иное.
     return (
         <div>
             <h1>Login</h1>
-            <form onSubmit={props.handleSubmit}> 
-                <div>
-                    <Field name="email" placeholder="email" component={Input} validate={[requiredField]} />
-                </div>
-                <div>
-                    <Field name="password" placeholder="password" component={Input} validate={[requiredField]} />
-                </div>
-                <div className={styles.checkbox}>
+            <form onSubmit={handleSubmit}> 
+                {customField("email", "email", Input, [requiredField], "")}
+                {customField("password", "password", Input, [requiredField], "", {type: "password"})}
+                {/* Пример рефактора */}
+                {/* <div className={styles.checkbox}>
                     <Field name="rememberMe" type={"checkbox"} component={Input} /><div>Remember Me</div>
-                </div>
-                {props.error && <div className={styles.formError}>
-                    <span>{props.error}</span>
+                </div> */}
+                {customField("rememberMe", "", Input, "", styles.checkbox, {type: "checkbox"}, "Remember me")}
+                {error && <div className={styles.formError}>
+                    <span>{error}</span>
                 </div>
                 }
+                {captchaUrl && <img src={captchaUrl} alt="CaptchaPic"/>}
+                {captchaUrl && customField("captcha", "Enter symbols here: ", Input, [requiredField], "")}
                 <div>
                     <button>Отправить</button>
                 </div>
@@ -39,12 +39,12 @@ const ReduxLoginForm = reduxForm({
 
 const Login = (props) => {
     const onSubmit = (formData) => {
-        props.login(formData.email, formData.password, formData.rememberMe)
+        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha) //
     }
 
     if(props.isAuth) return <Navigate to="/profile" />
 
-    return (<ReduxLoginForm onSubmit={onSubmit}/>)
+    return (<ReduxLoginForm  captchaUrl={props.captchaUrl} onSubmit={onSubmit}/>)
 }
 
 export default Login

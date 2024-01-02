@@ -2,11 +2,10 @@ import React from "react";
 import UsersMapHelper from "./UsersMapHelper/UsersMapHelper";
 import styles from "./Users.module.css";
 import Preloader from "../common/preloader/preloader";
+import UsersPaginator from "./UsersPaginator/UsersPaginator";
 
 const UsersFC = (props) => {
     let createPagesSelectRow = Math.ceil(props.TotalUsersCount / props.pageSize);
-    console.log(props.TotalUsersCount);
-    console.log(createPagesSelectRow);
 
     let placementPagesRow = [];
     for (let i = 1; i <= createPagesSelectRow; i++) {
@@ -37,10 +36,12 @@ const UsersFC = (props) => {
                             <div className={styles.usersBody_preloader}><Preloader /></div> : null}
                         {arrayOfUsers}
                         <div className={styles.showMore}>
-                            {placementPagesRow.map(page => (
-                                <span className={props.currentPage === page ? styles.placementPagesSelectRow_currentSpan : undefined}
-                                    onClick={() => { props.onChangedPage(page) }}>{page}</span>
-                            ))}
+                            <UsersPaginator 
+                                TotalUsersCount={props.TotalUsersCount} 
+                                pageSize={props.pageSize} 
+                                currentPage={props.currentPage} 
+                                onChangedPage={props.onChangedPage} 
+                            />
                         </div>
                     </div>
                 </div>

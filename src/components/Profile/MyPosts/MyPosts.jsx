@@ -1,11 +1,12 @@
 // import { createRef } from "react";
+import React from "react";
 import classes from "./MyPosts.module.css"
 import Post from "./Post/Post";
 import { Field, reduxForm } from "redux-form";
 
 const MyPosts = (props) => {
-    const arrayOfMessagesUsers = props.postsData.map(el => <Post message={el.text} likes={el.valueOfLikes} />)
-    
+    const arrayOfMessagesUsers = [...props.postsData].reverse().map((el) => <Post key={el.id} message={el.text} likes={el.valueOfLikes} />)
+
     // Redux-Form убирает:
     // const getRefFromTextarea = createRef();
     // const addPost = () => {
@@ -19,12 +20,12 @@ const MyPosts = (props) => {
     const onSubmitPost = (values) => {
         props.addPostOnWallCB(values.userPostInput)
     }
-
+    
     return (
         <div className={classes.posts}>
             <b><font size='5'>My posts</font></b>
             <br />
-            
+
             {// Redux-Form убирает:
             /* <div className={classes.textareaBlock}>
                 <textarea onChange={getActionOfUserInTextareaLocal} ref={getRefFromTextarea} className={classes.textareaHerself} value={props.recievedActionOfUser}></textarea>
@@ -52,6 +53,6 @@ const TextAreaComponent = (props) => {
     )
 }
 
-const FormedTextAreaComponent = reduxForm({form: "userPostOnWall"})(TextAreaComponent)
+const FormedTextAreaComponent = reduxForm({ form: "userPostOnWall" })(TextAreaComponent)
 
-export default MyPosts;
+export default (MyPosts);

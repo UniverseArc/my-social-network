@@ -4,6 +4,7 @@ import React from "react";
 import { getAuthFromUserThunkCreator, logoutThunkCreator,} from "../Redux/authReducer";
 class HeaderContainer extends React.Component {
     componentDidMount() {
+        
         // this.props.getAuthFromUserThunkCreator(this.props.UserId)
         // | | |
         // v v v
@@ -44,6 +45,7 @@ let mapStateToProps = (state) => {
         login: state.authUser.login,
         isAuth: state.authUser.isAuth,
         userAvatar: state.authUser.userAvatar,
+        userProfile: state.authUser.userProfile,
     }
 }
 export default connect(mapStateToProps, { getAuthFromUserThunkCreator, logout: logoutThunkCreator })(HeaderContainer);
